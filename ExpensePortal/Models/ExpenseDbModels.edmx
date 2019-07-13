@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExpensePortal.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ExpenseRecord">
+          <Key>
+            <PropertyRef Name="ExpenseRecordId" />
+          </Key>
+          <Property Name="ExpenseRecordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ReceiptImagePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RequesterUserId" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ApproverId" Type="nvarchar" MaxLength="256" />
+          <Property Name="ApprovalStatusId" Type="tinyint" />
+          <Property Name="ApproverComment" Type="nvarchar(max)" />
+          <Property Name="SubmittedDate" Type="datetime" />
+          <Property Name="ApprovedOrRejectedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserRegion">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ExpenseRecord_ExpenseRecord">
+          <End Role="ExpenseRecord" Type="Self.ExpenseRecord" Multiplicity="1" />
+          <End Role="ExpenseRecord1" Type="Self.ExpenseRecord" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseRecord">
+              <PropertyRef Name="ExpenseRecordId" />
+            </Principal>
+            <Dependent Role="ExpenseRecord1">
+              <PropertyRef Name="ExpenseRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExpensePortalModelsStoreContainer">
+          <EntitySet Name="ExpenseRecord" EntityType="Self.ExpenseRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRegion" EntityType="Self.UserRegion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ExpenseRecord_ExpenseRecord" Association="Self.FK_ExpenseRecord_ExpenseRecord">
+            <End Role="ExpenseRecord" EntitySet="ExpenseRecord" />
+            <End Role="ExpenseRecord1" EntitySet="ExpenseRecord" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExpensePortal.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ExpenseRecord">
+          <Key>
+            <PropertyRef Name="ExpenseRecordId" />
+          </Key>
+          <Property Name="ExpenseRecordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RequesterUserId" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ApproverId" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ApprovalStatusId" Type="Byte" />
+          <Property Name="ApproverComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubmittedDate" Type="DateTime" Precision="3" />
+          <Property Name="ApprovedOrRejectedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ExpenseRecord1" Relationship="Self.FK_ExpenseRecord_ExpenseRecord" FromRole="ExpenseRecord" ToRole="ExpenseRecord1" />
+          <NavigationProperty Name="ExpenseRecord2" Relationship="Self.FK_ExpenseRecord_ExpenseRecord" FromRole="ExpenseRecord1" ToRole="ExpenseRecord" />
+        </EntityType>
+        <EntityType Name="UserRegion">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ExpenseRecord_ExpenseRecord">
+          <End Role="ExpenseRecord" Type="Self.ExpenseRecord" Multiplicity="1" />
+          <End Role="ExpenseRecord1" Type="Self.ExpenseRecord" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseRecord">
+              <PropertyRef Name="ExpenseRecordId" />
+            </Principal>
+            <Dependent Role="ExpenseRecord1">
+              <PropertyRef Name="ExpenseRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExpenseDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ExpenseRecords" EntityType="Self.ExpenseRecord" />
+          <EntitySet Name="UserRegions" EntityType="Self.UserRegion" />
+          <AssociationSet Name="FK_ExpenseRecord_ExpenseRecord" Association="Self.FK_ExpenseRecord_ExpenseRecord">
+            <End Role="ExpenseRecord" EntitySet="ExpenseRecords" />
+            <End Role="ExpenseRecord1" EntitySet="ExpenseRecords" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExpensePortalModelsStoreContainer" CdmEntityContainer="ExpenseDBEntities">
+          <EntitySetMapping Name="ExpenseRecords">
+            <EntityTypeMapping TypeName="ExpensePortal.Models.ExpenseRecord">
+              <MappingFragment StoreEntitySet="ExpenseRecord">
+                <ScalarProperty Name="ExpenseRecordId" ColumnName="ExpenseRecordId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ReceiptImagePath" ColumnName="ReceiptImagePath" />
+                <ScalarProperty Name="RequesterUserId" ColumnName="RequesterUserId" />
+                <ScalarProperty Name="ApproverId" ColumnName="ApproverId" />
+                <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+                <ScalarProperty Name="ApproverComment" ColumnName="ApproverComment" />
+                <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
+                <ScalarProperty Name="ApprovedOrRejectedDate" ColumnName="ApprovedOrRejectedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRegions">
+            <EntityTypeMapping TypeName="ExpensePortal.Models.UserRegion">
+              <MappingFragment StoreEntitySet="UserRegion">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

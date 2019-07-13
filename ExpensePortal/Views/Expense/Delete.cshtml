@@ -1,0 +1,96 @@
+﻿@model ExpensePortal.Models.ExpenseRecord
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ExpenseRecord</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceiptImagePath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiptImagePath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequesterUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequesterUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApproverId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApproverId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovalStatusId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovalStatusId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApproverComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApproverComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmittedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubmittedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedOrRejectedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedOrRejectedDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

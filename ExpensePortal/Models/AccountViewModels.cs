@@ -81,6 +81,8 @@ namespace ExpensePortal.Models
         public string ConfirmPassword { get; set; }
 
         public string Name { get; set; }
+
+        public string Region { get; set; }
     }
 
     public class ResetPasswordViewModel

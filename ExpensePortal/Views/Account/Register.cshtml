@@ -29,9 +29,15 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
+    <div class="form-group">
+        @Html.Label("Region", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("Region")
+        </div>
+    </div>
     <!--Select the Role Type for the User-->
     <div class="form-group">
-        @Html.Label("Select Your User Type", new { @class = "col-md-2 control-label" })
+        @Html.Label("Role", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.DropDownList("Name")
         </div>

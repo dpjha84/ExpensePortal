@@ -1,0 +1,199 @@
+﻿@model IEnumerable<ExpensePortal.Models.ExpenseRecord>
+
+@{
+    ViewBag.Title = "Index";
+}
+<p>
+    @if (User.IsInRole("Employee"))
+    {
+    <p></p>
+    @Html.ActionLink("Create New Expense", "Add", null, new { @class = "btn btn-primary" })
+}
+
+    <h2>
+        @if (User.IsInRole("Employee"))
+        {
+            @Html.Raw("Expense Submission History");
+        }
+        else
+        {
+            @Html.Raw("Review Expense Submissions");
+        }
+    </h2>
+
+    @if ((User.IsInRole("Employee") && Model.Any()) || (User.IsInRole("Team Lead") && Model.Where(x => x.ApprovalStatusId == 0).Any()))
+    {
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Submitted Date
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Approver
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            Reviewed Date
+        </th>
+        <th></th>
+    </tr>
+    @if (User.IsInRole("Team Lead"))
+    {
+        foreach (var item in Model.Where(x => x.ApprovalStatusId == 0))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmittedDate)
+                </td>
+                <td>
+                    @Enum.GetName(typeof(ExpensePortal.Controllers.ApprovalStatus), item.ApprovalStatusId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApproverId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApproverComment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedOrRejectedDate)
+                </td>
+                <td>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Review", "Details", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                    @if (User.IsInRole("Employee"))
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmittedDate)
+                </td>
+                <td>
+                    @Enum.GetName(typeof(ExpensePortal.Controllers.ApprovalStatus), item.ApprovalStatusId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApproverId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApproverComment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedOrRejectedDate)
+                </td>
+                <td>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Review", "Details", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                    @if (User.IsInRole("Employee"))
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ExpenseRecordId }, new { @class = "btn btn-primary" })
+                    }
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+    }
+    else
+    {
+        if (User.IsInRole("Employee"))
+        {
+            @Html.Raw("You don't have any expense submission!");
+
+        }
+        else
+        {
+            @Html.Raw("Great! You don't have any expenses to review.");
+        }
+    }
+    @if (User.IsInRole("Team Lead"))
+    {
+        if (Model.Where(x => x.ApprovalStatusId != 0).Any())
+        {
+            <p></p>
+            <h2>
+                @Html.Raw("Expense Review History")
+            </h2>
+            <table class="table">
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Submitted Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Requester
+                    </th>
+                    <th>
+                        Comments
+                    </th>
+                    <th>
+                        Reviewed Date
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Where(x => x.ApprovalStatusId != 0))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubmittedDate)
+                        </td>
+                        <td>
+                            @Enum.GetName(typeof(ExpensePortal.Controllers.ApprovalStatus), item.ApprovalStatusId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequesterUserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApproverComment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApprovedOrRejectedDate)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+    }

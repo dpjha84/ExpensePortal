@@ -1,0 +1,165 @@
+﻿@model ExpensePortal.Models.ExpenseRecord
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@using (Html.BeginForm("Approve", "Expense", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        <h4>Expense Details</h4>
+        <hr />
+        @Html.HiddenFor(model => model.ExpenseRecordId)
+    <dl class="dl-horizontal">
+        <dt>
+            <p></p>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            <p></p>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            <p></p>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            <p></p>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            <p></p>
+            @Html.DisplayNameFor(model => model.SubmittedDate)
+        </dt>
+
+        <dd>
+            <p></p>
+            @Html.DisplayFor(model => model.SubmittedDate)
+        </dd>
+        @if (User.IsInRole("Employee"))
+        {
+            <dt>
+                <p></p>
+                Status
+            </dt>
+
+            <dd>
+                <p></p>
+                <div>
+                    @Enum.GetName(typeof(ExpensePortal.Controllers.ApprovalStatus), Model.ApprovalStatusId)
+                </div>
+            </dd>
+        }
+
+            @if (User.IsInRole("Team Lead"))
+            {
+                <dt>
+                    <p></p>
+                    @Html.DisplayNameFor(model => model.RequesterUserId)
+                </dt>
+                <dd>
+                    <p></p>
+                    @Html.DisplayFor(model => model.RequesterUserId)
+
+                </dd>
+            }
+            else
+            {
+                <dt>
+                    <p></p>
+                    @Html.DisplayNameFor(model => model.ApproverId)
+                </dt>
+
+                <dd>
+                    <p></p>
+                    @Html.DisplayFor(model => model.ApproverId)
+
+                </dd>
+            }
+            @if (User.IsInRole("Employee"))
+            {
+                <dt>
+                    <p></p>
+                    @Html.DisplayNameFor(model => model.ApproverComment)
+
+                </dt>
+
+                <dd>
+                    <p></p>
+                    @Html.DisplayFor(model => model.ApproverComment)
+                </dd>            
+                <dt>
+                    <p></p>
+                    @Html.DisplayNameFor(model => model.ApprovedOrRejectedDate)
+                </dt>
+
+                <dd>
+                    <p></p>
+                    @Html.DisplayFor(model => model.ApprovedOrRejectedDate)
+                </dd>
+            }
+            <dt>
+                <p></p>
+
+                @Html.DisplayNameFor(model => model.ReceiptImagePath)
+            </dt>
+
+            <dd>
+                <p></p>
+
+                @Html.ActionLink("View Receipt", "Preview", new { id = Model.ExpenseRecordId })
+            </dd>
+
+            @if (User.IsInRole("Team Lead"))
+            {
+                <dt>
+                    <p></p>
+
+                    Comments
+                </dt>
+
+                <dd>
+                    <p></p>
+
+                    @Html.EditorFor(model => model.ApproverComment, new { htmlAttributes = new { @class = "form-control" } })
+                </dd>
+                <dt>
+                    <p></p>
+
+                </dt>
+
+                <dd>
+                    <p></p>
+                    <input type="submit" value="Approve" class="btn btn-primary" name="submitButton" />
+                    <input type="submit" value="Reject" class="btn btn-primary" name="submitButton" />
+                </dd>
+            }
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+@*<script type="text/javascript">
+        $(function () {
+            $('#pdd').dialog({
+                autoOpen: false,
+                resizable: false,
+                title: 'Preview',
+                modal: true,
+                width: 400,
+                height: 500,
+                open: function (event, ui) {
+                    $(this).load("@Url.Action("Preview")");
+                },
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $('#previewLink').click(function () {
+                $('#pdd').dialog('open');
+            });
+        });
+    </script>*@

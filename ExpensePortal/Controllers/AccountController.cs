@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ExpensePortal.Models;
+using System.Collections.Generic;
 
 namespace ExpensePortal.Controllers
 {
@@ -142,6 +143,13 @@ namespace ExpensePortal.Controllers
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
+            var list = new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Asia", Value = "Asia" },
+                new SelectListItem{ Text="Europe", Value = "Europe" }
+            };
+            ViewBag.Region = list;// new SelectList(new List<SelectListItem> { }, "Regions", "Regions");
+            //ViewData.Add("Regions", list);
             return View();
         }
 
@@ -161,10 +169,15 @@ namespace ExpensePortal.Controllers
                     await this.UserManager.AddToRoleAsync(user.Id, model.Name);
                     //Ends Here
 
+                    using(var db = new ExpenseDBEntities())
+                    {
+                        db.UserRegions.Add(new UserRegion { Email = model.Email, RegionId = (int)Enum.Parse(typeof(Region), model.Region) });
+                        db.SaveChanges();
+                    }
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Expense");
                 }
 
                 AddErrors(result);
@@ -452,7 +465,7 @@ namespace ExpensePortal.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Expense");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

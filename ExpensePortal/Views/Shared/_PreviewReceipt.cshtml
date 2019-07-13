@@ -1,0 +1,14 @@
+﻿@model ExpensePortal.Models.ExpenseRecord
+
+@{
+    ViewBag.Title = "Preview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p></p>
+@Html.ActionLink("Back to Details", "Details", new { id = Model.ExpenseRecordId })
+<p></p>
+<div class="col-md-4" style="text-align:center">
+    <img src="@Url.Content(Model.ReceiptImagePath)" style="width:700px;height:700px;border:solid" />
+</div>
+
+
